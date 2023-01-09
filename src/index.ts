@@ -108,23 +108,140 @@ player3.age = 222; //playerMaker의 함수반환 타입을 알고 있기 때문�
 
 
 //3.2 다형성
-type SuperPrint = {
-    /* 받는 타입이 무엇인지 모를 경우 모든 타입을 오버로딩해야 할때
-    (arr: number[]): void,
-    (arr: boolean[]): void,
-    (arr: string[]): void,
-    (arr: (number|boolean)[]): void,
-    */
-   <TypePlaceholder>(arr: TypePlaceholder[]): TypePlaceholder, //Generic을 사용-> 자동으로 받은 타입을 읽어서 TypePlacehold타입을 생성
+    type SuperPrint = {
+        /* 받는 타입이 무엇인지 모를 경우 모든 타입을 오버로딩해야 할때
+        (arr: number[]): void,
+        (arr: boolean[]): void,
+        (arr: string[]): void,
+        (arr: (number|boolean)[]): void,
+        */
+    //    <TypePlaceholder>(arr: TypePlaceholder[]): TypePlaceholder, //Generic을 사용-> 자동으로 받은 타입을 읽어서 TypePlacehold타입을 생성
+        // ?을 사용해 optional 사용가능
+    <TypePlaceholder, M>(arr: TypePlaceholder[], b?: M): TypePlaceholder | M,
     // (arr: any[]): any
-}
+    }
 
-//Generic을 사용하면 이후 받는 param에서도 타입이 지정되어 안전하게 사용 가능
-const superPrint: SuperPrint = (arr) => {
-    return arr[0];
-}
-//Generic을 사용하면 이후 return 값에서 타입이 지정되어 안전하게 사용가능
-const s1 = superPrint([12,2,3]); //return 타입 = number
-const s2 = superPrint([true, false,true]); //return 타입 = boolean
-const s3 = superPrint(["asd","vb",12,34]); //return 타입 = number | string
-//만약 any[]를 사용하면 return타입도 any가 될 것임
+    //Generic을 사용하면 이후 받는 param에서도 타입이 지정되어 안전하게 사용 가능
+    const superPrint: SuperPrint = (arr1, b) => {
+        if(b) return b;
+        return arr1[0];
+    }
+
+    //Generic을 사용하면 이후 return 값에서 타입이 지정되어 안전하게 사용가능
+    const s1 = superPrint([12,2,3], "test"); //return 타입 = number
+    const s2 = superPrint([true, false,true]); //return 타입 = boolean
+    const s3 = superPrint(["asd","vb",12,34], "test"); //return 타입 = number | string
+    const s4 = superPrint<boolean, string>([true,false]);
+    //만약 any[]를 사용하면 return타입도 any가 될 것임
+
+
+    //object에서 활용
+    type User<I> = {
+        name: string,
+        Info: I,
+    };
+    type UserInfo = { a: string };
+    type UserType = User<UserInfo>;
+    
+      //추상화 단계 분리
+        //1
+        const user1: UserType = {
+            name: "Goongam",
+            Info: { a: "정보"},
+        }
+        //2
+        const user2: User<UserInfo> = {
+            name: "zxc",
+            Info: {a: '정보'},
+        };
+        //3
+        const user3: User<{a: string}> = {
+            name:"zvvvv",
+            Info: {a:"zxc"},
+        }
+
+
+
+    //이미 생성된 제네릭 활용
+    function printAllNumbers(arr: Array<number>){
+
+    }
+
+
+
+
+
+//test- ...문법
+    type TestF = <E>(a: string, ...b: E[]) => E[];
+    const funcc: TestF = (a, ...b) => b;
+
+    console.log(funcc("123","s", "x"));
+
+
+//4.0
+    //Class
+    abstract class User40{
+        constructor( //필드 자동 생성
+            private firstName: string, //class내에서만 접근가능
+            private lastName: string, 
+            protected nickname: string, //상속된 클래스 내에서 접근가능
+            public age: number, //인스턴스 에서도 접근가능
+        ){}
+
+        getFullName(){
+            return `${this.firstName} ${this.lastName}`;
+        }
+
+        abstract getNickName(): void; //상속받은 클래스에서 직접 구현
+    }
+    class Player40 extends User40 {
+        getNickName(): string {
+            return this.nickname; //protected
+        }
+        
+    }
+
+    const goongam = new Player40("goon","gam","군감",23);
+    goongam.getFullName();
+
+
+    //4.1
+    type Words = {
+        [key:string]: string, //[]: key의 type을 설정
+    }
+
+    class Dict{
+
+        //constructor의 인자로 사용하지 않고 데이터 초기화
+        private words: Words; 
+        constructor(){        
+            this.words = {};  
+        }
+
+        add(word: Word):void{ //클래스타입: 타입이 클래스의 인스턴스인 경우 사용
+            if(this.words[word.term] === undefined) {
+                this.words[word.term] = word.def;
+            }
+        }
+
+        getDef(term: string){
+            if(this.words[term] === undefined)
+                return "찾는단어가 없음";
+            
+            return this.words[term];
+        }
+    }
+
+    class Word{
+        constructor(
+            public term: string,
+            public def: string,
+        ){}
+    }
+    
+    const mydict = new Dict();
+    mydict.add(new Word("t","tt"));
+    console.log(mydict.getDef('t'));
+    console.log(mydict.getDef('x'));
+
+
