@@ -230,12 +230,17 @@ player3.age = 222; //playerMaker의 함수반환 타입을 알고 있기 때문�
             
             return this.words[term];
         }
+
+        modify(term: string, modifydef: string){
+            if(this.words[term] !== undefined)
+                this.words[term] = modifydef
+        }
     }
 
     class Word{
         constructor(
-            public term: string,
-            public def: string,
+            public readonly term: string, //readonly로 word.term = "asd" 방지
+            public readonly def: string,
         ){}
     }
     
@@ -243,5 +248,104 @@ player3.age = 222; //playerMaker의 함수반환 타입을 알고 있기 때문�
     mydict.add(new Word("t","tt"));
     console.log(mydict.getDef('t'));
     console.log(mydict.getDef('x'));
+    mydict.modify('t', 'modifyTT')
+    console.log(mydict.getDef("t"));
 
 
+//DAY4
+
+//특정 value 제한 - 타입 대신 값을 입력
+//interface - 오브젝트의 타입을 정할 때 만 사용(type의 하위)
+    type Team42 = "red" | "blue" | "yellow";
+    type Health42 = 1 | 4 | 10;
+
+    interface Player42 {
+        name: "zxc",
+        team: Team42,
+        health: Health42,
+    }
+
+    const goongam42 : Player42 = {
+        name: "zxc",
+        team: "blue",
+        health: 10,
+    } 
+
+ //1. 상속   
+    //interface 상속
+    interface Test42 {
+        name: string,
+    }
+    interface Test422 extends Test42{ //interface 상속
+
+    }
+    const User42: Test422 = {
+        name: "asda"
+    };
+
+    //type으로 상속
+    type Test421 = {
+        name: string,
+    }
+    type Test4211 = Test421 & { //&키워드 사용
+
+    }
+    const User421:Test4211 = {
+        name: "xzcc",
+    };
+
+
+
+ //2. interface 합체
+    interface Food42 {  //같은 이름의 interface
+        name: string
+    }
+    interface Food42 {  //같은 이름의 interface
+        category: string
+    }
+
+    const carrot: Food42 = {    //둘다 구현
+        category: "qq",
+        name: "vvv",
+    }
+
+ //abstract 클래스와 interaface차이
+    abstract class UserA43 {
+        constructor(
+            protected firstName: string,
+            protected lastName: string,
+        ){}
+
+        abstract sayHi(name: string):string;
+        abstract fullName():string;
+    }
+    class PlayerA43 extends UserA43{
+        fullName(): string {
+            return `${this.firstName} ${this.lastName}`
+        }
+        sayHi(name: string): string {
+            return `HI ${name}, My name is ${this.fullName}`
+        }
+    }
+
+    interface UserI43 { //1.1 필드에 constructor를 사용하지 않음
+        firstName: string, 
+        lastName: string,
+        sayHi(name: string):string; //1.2 함수에 abstract를 사용하지 않음
+        fullName():string;
+    }
+    class PlayerI43 implements UserI43{ //2 extends 대신 implements를 사용
+        constructor( //1.1.1 구현 할때 constructor로 필드 선언
+            public firstName: string,   //1.1.2 public만을 사용
+            public lastName: string,    //1.1.2 public만을 사용
+        ){}
+
+        fullName(): string {
+            return `${this.firstName} ${this.lastName}`
+        }
+        sayHi(name: string): string {
+            return `HI ${name}, My name is ${this.fullName}`
+        }
+    }
+    //3. javascript코드로 변환할 때 interface는 해당 내용을 구현하지 않음(상속받은 클래스에만 내용이 존재)
+        // -> 코드가 가벼워짐 
