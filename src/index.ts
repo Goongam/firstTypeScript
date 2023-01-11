@@ -269,7 +269,7 @@ player3.age = 222; //playerMaker의 함수반환 타입을 알고 있기 때문�
         name: "zxc",
         team: "blue",
         health: 10,
-    } 
+    }
 
  //1. 상속   
     //interface 상속
@@ -349,3 +349,33 @@ player3.age = 222; //playerMaker의 함수반환 타입을 알고 있기 때문�
     }
     //3. javascript코드로 변환할 때 interface는 해당 내용을 구현하지 않음(상속받은 클래스에만 내용이 존재)
         // -> 코드가 가벼워짐 
+
+
+//4.5 활용
+
+    interface Storage1<T> {
+        [key:string]: T,
+    }
+    class LocalStorage1<T>{
+        private storage:Storage1<T> = {}
+        
+        set(key:string, value:T){
+            this.storage[key] = value;
+        }
+        get(key: string):T{
+            return this.storage[key]
+        }
+    }
+
+    const stringStorage = new LocalStorage1<string>();
+    stringStorage.set("first","ccc");
+    console.log(stringStorage.get("first"));
+
+
+
+import { init, exit } from "./myPackage";
+const ab = init({
+    url: "string",
+    debug: true,
+});
+exit(1);
