@@ -47,4 +47,63 @@ const blockchain = new BlockChain();
 blockchain.addBlock("First one");
 blockchain.addBlock("Second one");
 
-console.log(blockchain.getBlock());
+// console.log(blockchain.getBlock());
+
+
+
+// interface Words{
+//     [key:string]: string
+// }
+// class Word{
+//     constructor(
+//         public readonly term:string,
+//         public readonly def: string,
+//     ){}
+// }
+// class Dict{
+//     private words: Words = {};
+
+//     add(newWord: Word){
+//         if(this.words[newWord.term]) return console.log("word that already exist");
+//         this.words[newWord.term] = newWord.def;
+//     }
+//     get(term: string){
+//         if(!this.words[term]) return "word not found"
+//         return this.words[term];
+//     }
+//     delete(term: string){
+//         if(!this.words[term]) return console.log("word not found");
+//         delete this.words[term];
+//     }
+//     update(term:string, newDef:string){
+//         if(!this.words[term]) return console.log("word not found");
+//         this.words[term] = newDef;
+//     }
+//     showAll(){
+//         Object.keys(this.words).forEach(term => {
+//             console.log(`${term}: ${this.words[term]}`);
+//         });
+//     }
+//     count(){
+//         return Object.keys(this.words).length;
+//     }
+
+// }
+
+// const dict = new Dict();
+
+// dict.add(new Word('A','AA')); 
+// dict.add(new Word('B','BB')); 
+// dict.add(new Word('C','CC')); 
+// console.log(dict.get('A')); 
+
+// dict.update('A','AAAA'); 
+// dict.add(new Word('A','AbbA'));
+// console.log(dict.get('A'));
+
+// dict.delete('A'); 
+// console.log(dict.get('A'));
+
+// dict.showAll(); 
+
+// console.log("count: "+ dict.count());

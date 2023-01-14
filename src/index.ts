@@ -373,9 +373,10 @@ player3.age = 222; //playerMaker의 함수반환 타입을 알고 있기 때문�
 
 
 
-import { init, exit } from "./myPackage";
-const ab = init({
-    url: "string",
-    debug: true,
-});
-exit(1);
+// import { init, exit } from "./myPackage";
+// const ab = init({
+//     url: "string",
+//     debug: true,
+// });
+// exit(1);
+
